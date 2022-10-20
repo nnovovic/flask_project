@@ -1,11 +1,16 @@
 import pytest
-from app import create_app
+from flask_migrate import upgrade
+
+from app import create_app, migrate
 from app.config import TestingConfig
 
 
 @pytest.fixture()
 def app():
     app = create_app(TestingConfig)
+
+    with app.app_context():
+        upgrade()
 
     # other setup can go here
 

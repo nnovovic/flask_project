@@ -1,9 +1,11 @@
 from flask import Flask
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(config) -> Flask:
@@ -13,8 +15,8 @@ def create_app(config) -> Flask:
     db.init_app(app)
 
     from app.models import Page
-    with app.app_context():
-        db.create_all()
+
+    migrate.init_app(app, db, directory='app/migrations')
 
     from app.blueprints import main, page
     app.register_blueprint(main)
