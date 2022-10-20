@@ -1,7 +1,6 @@
 import pytest
-from flask_migrate import upgrade
 
-from app import create_app, migrate
+from app import create_app, db
 from app.config import TestingConfig
 
 
@@ -10,7 +9,7 @@ def app():
     app = create_app(TestingConfig)
 
     with app.app_context():
-        upgrade()
+        db.create_all()
 
     # other setup can go here
 
