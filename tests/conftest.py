@@ -1,12 +1,15 @@
 import pytest
 
 from app import create_app, db
-from app.config import TestingConfig
 
 
 @pytest.fixture()
 def app():
-    app = create_app(TestingConfig)
+    mp = pytest.MonkeyPatch()
+    mp.setenv('TESTING', 'True')
+    mp.setenv('FLASK_SQLALCHEMY_DATABASE_URI', 'sqlite:///:memory:')
+
+    app = create_app()
 
     with app.app_context():
         db.create_all()

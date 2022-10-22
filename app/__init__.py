@@ -8,9 +8,10 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app(config) -> Flask:
+def create_app(test: bool = False) -> Flask:
     app = Flask(__name__)
-    app.config.from_object(config)
+
+    app.config.from_prefixed_env()
 
     db.init_app(app)
 
